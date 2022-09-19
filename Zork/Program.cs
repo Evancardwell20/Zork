@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.Design;
 using System.Linq;
+using System.Collections.Generic; 
 
 namespace Zork
 {
@@ -13,8 +14,9 @@ namespace Zork
                 return _rooms[_location.Row, _location.Column];
             }
         }
-        static void Main(string[] args)
+        static void Main()
         {
+            InitializeRoomDescription();
             Console.WriteLine("Welcome To Zork!");
 
             bool isRunning = true;
@@ -34,7 +36,7 @@ namespace Zork
                         break;
 
                     case Commands.LOOK:
-                        outputString = "This is an open field west of a white house, with a boarded front door.\nA rubber mat saying 'Welcome to Zork!' lies by the door.";
+                        Console.WriteLine(CurrentRoom.Description); 
                         break;
 
                     case Commands.NORTH:
@@ -90,6 +92,22 @@ namespace Zork
             }
             
             return didMove; 
+        }
+
+        private static void InitializeRoomDescription()
+        {
+
+            _rooms[0, 0].Description = "You are on a rock-strewn trail.";
+            _rooms[0, 1].Description = "You are facing the south side of a white house.";
+            _rooms[0, 2].Description = "You are at the top of the Great Canyon on its south wall";
+
+            _rooms[1, 0].Description = "This is a forest, with trees in all directions.";
+            _rooms[1, 1].Description = "This is an open field west of a white house, with a boarded front door.";
+            _rooms[1, 2].Description = "You are behind the white house. In one corner of the house there is a small window which is slightly ajar.";
+
+            _rooms[2, 0].Description = "This is a dimly lit forest, with large trees all around. To the east, there appears to be sunlight";
+            _rooms[2, 1].Description = "You are facing the north side of a white house. There is no door here, and all the windows are barred.";
+            _rooms[2, 2].Description = "You are in a clearing, with a forest surrounding you on the west and south"; 
         }
 
         private static Room[,] _rooms = 
