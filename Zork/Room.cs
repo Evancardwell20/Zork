@@ -1,8 +1,6 @@
-﻿using System;
-
-namespace Zork
+﻿namespace Zork
 {
-    internal class Room : Object
+    internal class Room
     {
 
         public string Name { get; set; }
