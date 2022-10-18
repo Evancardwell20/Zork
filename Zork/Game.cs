@@ -80,6 +80,7 @@ namespace Zork
         public static Game Load(string filename)
         {
             Game game = JsonConvert.DeserializeObject<Game>(File.ReadAllText(filename));
+            game.Player = game.World.SpawnPlayer();
             return game;
         }
         private static Commands ToCommand(string commandString) => Enum.TryParse<Commands>(commandString, ignoreCase: true, out Commands result) ? result : Commands.UNKNOWN;
