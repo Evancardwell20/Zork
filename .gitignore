@@ -9,4 +9,4 @@ Zork.Unity/Temp
 Zork.Unity/*.vsconfig
 Zork.Unity/*.sln
 Zork.Unity/obj
-Zork.Unity/*csproj
+Zork.Unity/*.csproj
