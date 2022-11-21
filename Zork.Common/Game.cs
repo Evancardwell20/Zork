@@ -116,6 +116,7 @@ namespace Zork.Common
                         }
                     }
                     break;
+                case Commands.Reward:
 
                 default:
                     Output.WriteLine("Unknown command.");

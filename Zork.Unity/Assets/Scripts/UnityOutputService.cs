@@ -11,8 +11,14 @@ public class UnityOutputService : MonoBehaviour, IOutputService
 
     [SerializeField]
     private Image NewLinePrefab;
+    
     [SerializeField]
     private Transform ContentTransform;
+    
+    [SerializeField]
+    [Range(0,100)]
+    private int maxEntries;
+    //Queue
 
     public void Write(object obj)
     {
@@ -36,6 +42,8 @@ public class UnityOutputService : MonoBehaviour, IOutputService
 
     private void ParseWriteLine(string message)
     {
+        //if entries.count >= maxEntries 
+        //look for \n to convert to new line in Unity
         var textLine = Instantiate(TextLinePrefab, ContentTransform);
         textLine.text = message;
     }
