@@ -14,12 +14,11 @@ public class UnityOutputService : MonoBehaviour, IOutputService
     
     [SerializeField]
     private Transform ContentTransform;
-    
-    [SerializeField]
-    [Range(0,100)]
-    private int maxEntries;
-    //Queue
 
+    [SerializeField]
+    [Range(0, 100)]
+    private int maxEntries;
+   
     public void Write(object obj)
     {
         ParseWriteLine(obj.ToString());
@@ -42,11 +41,53 @@ public class UnityOutputService : MonoBehaviour, IOutputService
 
     private void ParseWriteLine(string message)
     {
-        //if entries.count >= maxEntries 
-        //look for \n to convert to new line in Unity
-        var textLine = Instantiate(TextLinePrefab, ContentTransform);
-        textLine.text = message;
+        if (_entries.Count >= maxEntries)
+        {
+            _entries.Dequeue();
+        }
+
+        char separator = '\n';
+        string[] lineTokens = message.Split(separator);
+        string firstLine;
+        string secondLine;
+        if (lineTokens.Length == 1)
+        {
+            firstLine = lineTokens[0];
+            var textLine = Instantiate(TextLinePrefab, ContentTransform);
+            textLine.text = firstLine;
+            _entries.Enqueue(textLine.gameObject);
+        }
+        else
+        {
+            firstLine = lineTokens[0];
+            if(string.IsNullOrWhiteSpace(firstLine))
+            {
+                var newLine = Instantiate(NewLinePrefab, ContentTransform);
+                _entries.Enqueue(newLine.gameObject);
+            }
+
+            else
+            {
+                var firstTextLine = Instantiate(TextLinePrefab, ContentTransform);
+                firstTextLine.text = firstLine;
+                _entries.Enqueue(firstTextLine.gameObject);
+            }
+
+            secondLine = lineTokens[1];
+            if (string.IsNullOrWhiteSpace(secondLine))
+            {
+                var newLine = Instantiate(NewLinePrefab, ContentTransform);
+                _entries.Enqueue(newLine.gameObject);
+            }
+            else
+            {
+                var secondTextLine = Instantiate(TextLinePrefab, ContentTransform);
+                secondTextLine.text = secondLine;
+                _entries.Enqueue(secondTextLine.gameObject);
+            }
+
+        }
     }
 
-    private List<GameObject> _entries = new List<GameObject>();
+    private Queue<GameObject> _entries = new Queue<GameObject>();
 }

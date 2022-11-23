@@ -22,6 +22,7 @@
         I = Inventory,
         Score,
         Reward,
+        R = Reward,
         Unknown
     }
 }

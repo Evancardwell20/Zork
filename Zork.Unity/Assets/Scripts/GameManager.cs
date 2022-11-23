@@ -25,7 +25,27 @@ public class GameManager : MonoBehaviour
 
         _game.Player.LocationChanged += Player_LocationChanged;
 
+        _game.Player.MovesChanged += Player_MovesChanged;
+
+        _game.Player.ScoreChanged += Player_ScoreChanged;
+
         _game.Run(InputService, OutputService);
+
+    }
+
+    public void Player_LocationChanged(object sender, Room location)
+    {
+        LocationText.text = location.Name;
+    }
+
+    public void Player_ScoreChanged(object sender, int score)
+    {
+        ScoreText.text = ($"Score: {score}");
+    }
+
+    public void Player_MovesChanged(object sender, int moves)
+    {
+        MovesText.text = ($"Moves: {moves}");
     }
 
     public void Start()
@@ -57,7 +77,5 @@ Application.Quit();
     }
     
     private Game _game;
-
-    public EventHandler<Room> Player_LocationChanged { get; private set; }
-   
+    
 }
