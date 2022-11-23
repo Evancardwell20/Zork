@@ -35,7 +35,7 @@ namespace Zork.Common
             Input.InputReceived += OnInputReceived;
             Output.WriteLine("Welcome to Zork!");
             Look();
-            //Output.WriteLine($"\n{Player.CurrentRoom}");
+            Output.WriteLine($"\n{Player.CurrentRoom}");
         }
 
         public void OnInputReceived(object sender, string inputString)
@@ -145,7 +145,7 @@ namespace Zork.Common
                 Look();
             }
 
-            //Output.WriteLine($"\n{Player.CurrentRoom}");
+            Output.WriteLine($"\n{Player.CurrentRoom}");
         }
         
         private void Look()
