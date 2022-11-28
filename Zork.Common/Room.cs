@@ -20,10 +20,16 @@ namespace Zork.Common
         [JsonIgnore]
         public IEnumerable<Item> Inventory => _inventory;
 
+        [JsonIgnore]
+        public IEnumerable<Enemy> Enemy => _enemy;
+
         [JsonProperty]
         private string[] InventoryNames { get; set; }
 
-        public Room(string name, string description, Dictionary<Directions, string> neighborNames, string[] inventoryNames)
+        [JsonProperty]
+        private string[] EnemyNames { get; set; }
+
+        public Room(string name, string description, Dictionary<Directions, string> neighborNames, string[] inventoryNames, string[] enemyNames)
         {
             Name = name;
             Description = description;
@@ -32,6 +38,9 @@ namespace Zork.Common
 
             InventoryNames = inventoryNames ?? new string[0];
             _inventory = new List<Item>();
+
+            EnemyNames = enemyNames ?? new string[0];
+            _enemy = new List<Enemy>();
         }
 
         public static bool operator ==(Room lhs, Room rhs)
@@ -73,6 +82,13 @@ namespace Zork.Common
             }
 
             InventoryNames = null;
+
+            foreach (var enemyName in EnemyNames)
+            {
+                _enemy.Add(world.EnemiesByName[enemyName]);
+            }
+
+            EnemyNames = null;
         }
 
         public void AddItemToInventory(Item itemToAdd)
@@ -96,6 +112,7 @@ namespace Zork.Common
         public override string ToString() => Name;
 
         private readonly List<Item> _inventory;
+        private readonly List<Enemy> _enemy;
         private readonly Dictionary<Directions, Room> _neighbors;
     }
 }

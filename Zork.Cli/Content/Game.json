@@ -18,6 +18,12 @@
         "InventoryDescription": "A pile of leaves."
       }
     ],
+    "Enemies": [
+      {
+        "Name": "Troll",
+        "LookDescription": "A large Troll stands here."
+      }
+    ],
     "Rooms": [
       {
         "Name": "West of House",
@@ -30,6 +36,9 @@
         "InventoryNames": [
           "Mat",
           "Mailbox"
+        ],
+        "EnemyNames": [
+          "Troll"
         ]
       },
       {
