@@ -45,6 +45,8 @@ namespace Zork.Common
 
             string verb;
             string subject = null;
+            string preposition = null;
+            string noun = null;
             if (commandTokens.Length == 0)
             {
                 return;
@@ -53,10 +55,23 @@ namespace Zork.Common
             {
                 verb = commandTokens[0];
             }
+            else if (commandTokens.Length == 2)
+            {
+                verb = commandTokens[0];
+                subject = commandTokens[1];
+            }
+            else if (commandTokens.Length == 3)
+            {
+                verb = commandTokens[0];
+                subject = commandTokens[1];
+                preposition = commandTokens[2];
+            }
             else
             {
                 verb = commandTokens[0];
                 subject = commandTokens[1];
+                preposition = commandTokens[2];
+                noun = commandTokens[3];
             }
 
             Room previousRoom = Player.CurrentRoom;
@@ -135,6 +150,23 @@ namespace Zork.Common
                     Output.WriteLine($"Your score is {Player.Score} in {Player.Moves} turns.");
                         break;
 
+                case Commands.Attack:
+                    if (string.IsNullOrEmpty(subject))
+                    {
+                        Output.WriteLine("This command requires a subject.");
+                    }
+                    else if (string.IsNullOrEmpty(noun))
+                    {
+                        Output.WriteLine("Attack with what?");
+                    }
+
+                    else
+                    {
+                        Attack(subject);
+                        Player.Moves++;
+                    }
+                    break;
+
                 default:
                     Output.WriteLine("Unknown command.");
                     break;
@@ -189,6 +221,20 @@ namespace Zork.Common
                 Player.CurrentRoom.AddItemToInventory(itemToDrop);
                 Player.RemoveItemFromInventory(itemToDrop);
                 Output.WriteLine("Dropped.");
+            }
+        }
+
+        private void Attack(string enemyName)
+        {
+            Enemy enemyToAttack = Player.CurrentRoom.Enemy.FirstOrDefault(enemy => string.Compare(enemy.Name, enemyName, ignoreCase: true) == 0);
+            if (enemyToAttack == null)
+            {
+                Output.WriteLine("You can't see any such thing");
+            }
+
+            else
+            {
+               
             }
         }
 
