@@ -151,6 +151,7 @@ namespace Zork.Common
                         break;
 
                 case Commands.Attack:
+                    
                     if (string.IsNullOrEmpty(subject))
                     {
                         Output.WriteLine("This command requires a subject.");
@@ -161,7 +162,7 @@ namespace Zork.Common
                     }
                     else
                     {
-                        Attack(subject);
+                        Attack(subject, noun);
                         Player.Moves++;
                     }
                     break;
@@ -223,14 +224,25 @@ namespace Zork.Common
             }
         }
 
-        private void Attack(string enemyName)
+        private void Attack(string enemyName, string attackItemName)
         {
+            Item attackItem = Player.Inventory.FirstOrDefault(item => string.Compare(item.Name, attackItemName, ignoreCase: true) == 0);
             Enemy enemyToAttack = Player.CurrentRoom.Enemy.FirstOrDefault(enemy => string.Compare(enemy.Name, enemyName, ignoreCase: true) == 0);
+
             if (enemyToAttack == null)
             {
                 Output.WriteLine("You can't see any such thing");
             }
 
+            else if (attackItem == null)
+            {
+                Output.WriteLine($"You don't have a {attackItemName}.");
+            }
+
+            else if (!attackItem.IsWeapon)
+            {
+                Output.WriteLine($"You can't attack a {enemyName} with a {attackItemName}");
+            }
             else
             {
                 Random rnd = new Random();

@@ -5,18 +5,27 @@
       {
         "Name": "Mat",
         "LookDescription": "A rubber mat saying 'Welcome to Zork!' lies here.",
-        "InventoryDescription": "A welcome mat."
+        "InventoryDescription": "A welcome mat.",
+        "IsWeapon":  false
       },
-      {
-        "Name": "Mailbox",
-        "LookDescription": "There is a small mailbox here.",
-        "InventoryDescription": "A small mailbox."
-      },
-      {
-        "Name": "Leaves",
-        "LookDescription": "There is a pile of leaves here.",
-        "InventoryDescription": "A pile of leaves."
-      }
+        {
+            "Name": "Mailbox",
+            "LookDescription": "There is a small mailbox here.",
+            "InventoryDescription": "A small mailbox.",
+            "IsWeapon": false
+        },
+        {
+            "Name": "Leaves",
+            "LookDescription": "There is a pile of leaves here.",
+            "InventoryDescription": "A pile of leaves.",
+            "IsWeapon": false
+        },
+        {
+            "Name": "Sword",
+            "LookDescription": "There is an Elvish sword of great antiquity.",
+            "InventoryDescription": "An Elvish sword.",
+            "IsWeapon": true
+        }
     ],
     "Enemies": [
       {
@@ -36,7 +45,8 @@
         },
         "InventoryNames": [
           "Mat",
-          "Mailbox"
+            "Mailbox",
+            "Sword"
         ],
         "EnemyNames": [
           "Troll"
