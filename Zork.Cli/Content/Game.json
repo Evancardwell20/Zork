@@ -21,7 +21,8 @@
     "Enemies": [
       {
         "Name": "Troll",
-        "LookDescription": "A large Troll stands here."
+        "LookDescription": "A large Troll stands here.",
+        "Health": 1.0
       }
     ],
     "Rooms": [

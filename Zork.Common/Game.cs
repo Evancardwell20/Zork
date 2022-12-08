@@ -157,9 +157,8 @@ namespace Zork.Common
                     }
                     else if (string.IsNullOrEmpty(noun))
                     {
-                        Output.WriteLine("Attack with what?");
+                        Output.WriteLine("Unknown command");
                     }
-
                     else
                     {
                         Attack(subject);
@@ -234,10 +233,57 @@ namespace Zork.Common
 
             else
             {
-               
+                Random rnd = new Random();
+
+                Type type = typeof(Attacks);
+                Array values = type.GetEnumValues();
+                int attackIndex = rnd.Next(values.Length);
+
+                switch (attackIndex)
+                {
+                    case (int)Attacks.Miss:
+                        Output.WriteLine("You swing your sword and miss the Troll");
+                        break;
+
+                    case (int)Attacks.Kill:
+                        Output.WriteLine("You swing your sword and it's a direct hit. The troll falls to the ground");
+                        Player.CurrentRoom.RemoveEnemyFromRoom(enemyToAttack);
+                        break;
+
+                    case (int)Attacks.HeavyDamage:
+                        Output.WriteLine("You swing your sword and it's a solid hit");
+                        enemyToAttack.TakeDamage(0.8f);
+                        if (enemyToAttack.Health <= 0)
+                        {
+                            Player.CurrentRoom.RemoveEnemyFromRoom(enemyToAttack);
+                            Output.WriteLine("The troll falls to the ground");
+                        }
+                        else
+                        {
+                            Output.WriteLine($"Enemy Health: {enemyToAttack.Health}");
+                        }
+                        break;
+
+                    case (int)Attacks.LightDamage:
+                        Output.WriteLine("You swing your sword and it's a glancing blow");
+                        enemyToAttack.TakeDamage(0.4f);
+                        if (enemyToAttack.Health <= 0)
+                        {
+                            Player.CurrentRoom.RemoveEnemyFromRoom(enemyToAttack);
+                            Output.WriteLine("The troll falls to the ground");
+                        }
+                        else
+                        {
+                            Output.WriteLine($"Enemy Health: {enemyToAttack.Health}");
+                        }
+                        break;
+
+                    default:
+                        break;
+                    
+                }
             }
         }
-
         private static Commands ToCommand(string commandString) => Enum.TryParse(commandString, true, out Commands result) ? result : Commands.Unknown;
     }
 }
