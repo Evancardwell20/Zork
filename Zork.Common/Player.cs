@@ -116,7 +116,12 @@ namespace Zork.Common
                 throw new Exception("Could not remove item from inventory.");
             }
         }
-      
+
+        public void TakeDamage(float damageAmount)
+        {
+            _health -= damageAmount;
+        }
+
         private readonly World _world;
         private Room _currentRoom;
         private readonly List<Item> _inventory;

@@ -112,6 +112,7 @@ namespace Zork.Common
                     {
                         Take(subject);
                         Player.Moves++;
+                        EnemyAttack();
                     }
                     break;
 
@@ -124,11 +125,13 @@ namespace Zork.Common
                     {
                         Drop(subject);
                         Player.Moves++;
+                        EnemyAttack();
                     }
                     break;
 
                 case Commands.Inventory:
                     Player.Moves++;
+                    EnemyAttack();
                     if (Player.Inventory.Count() == 0)
                     {
                         Output.WriteLine("You are empty handed.");
@@ -148,10 +151,10 @@ namespace Zork.Common
 
                 case Commands.Score:
                     Output.WriteLine($"Your score is {Player.Score} in {Player.Moves} turns.");
-                        break;
+                    break;
 
                 case Commands.Attack:
-                    
+
                     if (string.IsNullOrEmpty(subject))
                     {
                         Output.WriteLine("This command requires a subject.");
@@ -164,6 +167,7 @@ namespace Zork.Common
                     {
                         Attack(subject, noun);
                         Player.Moves++;
+                        EnemyAttack();
                     }
                     break;
 
@@ -179,7 +183,7 @@ namespace Zork.Common
 
             Output.WriteLine($"\n{Player.CurrentRoom}");
         }
-        
+
         private void Look()
         {
             Output.WriteLine(Player.CurrentRoom.Description);
@@ -199,7 +203,7 @@ namespace Zork.Common
             Item itemToTake = Player.CurrentRoom.Inventory.FirstOrDefault(item => string.Compare(item.Name, itemName, ignoreCase: true) == 0);
             if (itemToTake == null)
             {
-                Output.WriteLine("You can't see any such thing.");                
+                Output.WriteLine("You can't see any such thing.");
             }
             else
             {
@@ -214,7 +218,7 @@ namespace Zork.Common
             Item itemToDrop = Player.Inventory.FirstOrDefault(item => string.Compare(item.Name, itemName, ignoreCase: true) == 0);
             if (itemToDrop == null)
             {
-                Output.WriteLine("You can't see any such thing.");                
+                Output.WriteLine("You can't see any such thing.");
             }
             else
             {
@@ -292,14 +296,14 @@ namespace Zork.Common
 
                     default:
                         break;
-                    
+
                 }
             }
         }
 
         private void EnemyAttack()
         {
-            if(Player.CurrentRoom.Enemy != null)
+            if (Player.CurrentRoom.Enemy != null)
             {
                 Random rnd = new Random();
 
@@ -315,23 +319,27 @@ namespace Zork.Common
 
                     case (int)Attacks.HeavyDamage:
                         Output.WriteLine("The troll swings at you and it's a solid hit");
-                        
+                        Player.TakeDamage(.6f);
+
                         if (Player.Health <= 0)
-                        { 
-                            Output.WriteLine("The troll falls to the ground");
+                        {
+                            IsRunning = false;
+                            Output.WriteLine("You fall to the ground and die.");
                         }
                         else
                         {
-                            Output.WriteLine($"Enemy Health: {Player.Health}");
+                            Output.WriteLine($"Your Health: {Player.Health}");
                         }
                         break;
 
                     case (int)Attacks.LightDamage:
-                        Output.WriteLine("You swing your sword and it's a glancing blow");
-                        
+                        Output.WriteLine("The troll swings at you and it's a glancing blow");
+                        Player.TakeDamage(.2f);
+
                         if (Player.Health <= 0)
                         {
-                            Output.WriteLine("The troll falls to the ground");
+                            IsRunning = false;
+                            Output.WriteLine("You fall to the ground and die.");
                         }
                         else
                         {
@@ -342,6 +350,8 @@ namespace Zork.Common
                     default:
                         break;
                 }
+
+            }
 
         }
         private static Commands ToCommand(string commandString) => Enum.TryParse(commandString, true, out Commands result) ? result : Commands.Unknown;
