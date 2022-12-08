@@ -23,7 +23,7 @@ namespace Zork.Common
         public Game(World world, string startingLocation)
         {
             World = world;
-            Player = new Player(World, startingLocation);
+            Player = new Player(World, startingLocation, 1);
         }
 
         public void Run(IInputService input, IOutputService output)
@@ -236,7 +236,7 @@ namespace Zork.Common
 
             else if (attackItem == null)
             {
-                Output.WriteLine($"You don't have a {attackItemName}.");
+                Output.WriteLine($"You don't have that");
             }
 
             else if (!attackItem.IsWeapon)

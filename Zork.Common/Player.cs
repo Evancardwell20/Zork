@@ -11,6 +11,8 @@ namespace Zork.Common
 
         public event EventHandler<int> MovesChanged;
 
+        public event EventHandler<float> HealthChanged;
+
         public Room CurrentRoom
         {
             get => _currentRoom;
@@ -56,12 +58,27 @@ namespace Zork.Common
             }
         }
 
-
+        public float Health
+        {
+            get
+            {
+                return _health;
+            }
+            set
+            {
+                if (_health != value)
+                {
+                    _health = value;
+                    HealthChanged?.Invoke(this, _health);
+                }
+            }
+        }
         public IEnumerable<Item> Inventory => _inventory;
 
-        public Player(World world, string startingLocation)
+        public Player(World world, string startingLocation, float health)
         {
             _world = world;
+            Health = health;
 
             if (_world.RoomsByName.TryGetValue(startingLocation, out _currentRoom) == false)
             {
@@ -99,11 +116,12 @@ namespace Zork.Common
                 throw new Exception("Could not remove item from inventory.");
             }
         }
-
+      
         private readonly World _world;
         private Room _currentRoom;
         private readonly List<Item> _inventory;
         private int _moves;
         private int _score;
+        private float _health;
     }
 }
