@@ -31,7 +31,7 @@
       {
         "Name": "Troll",
         "LookDescription": "A large Troll stands here.",
-        "Health": 1.0
+        "Health": 100
       }
     ],
     "Rooms": [

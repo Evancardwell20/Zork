@@ -23,7 +23,7 @@ namespace Zork.Common
         public Game(World world, string startingLocation)
         {
             World = world;
-            Player = new Player(World, startingLocation, 1);
+            Player = new Player(World, startingLocation, 100);
         }
 
         public void Run(IInputService input, IOutputService output)
@@ -112,7 +112,6 @@ namespace Zork.Common
                     {
                         Take(subject);
                         Player.Moves++;
-                        EnemyAttack();
                     }
                     break;
 
@@ -125,13 +124,11 @@ namespace Zork.Common
                     {
                         Drop(subject);
                         Player.Moves++;
-                        EnemyAttack();
                     }
                     break;
 
                 case Commands.Inventory:
                     Player.Moves++;
-                    EnemyAttack();
                     if (Player.Inventory.Count() == 0)
                     {
                         Output.WriteLine("You are empty handed.");
@@ -167,7 +164,7 @@ namespace Zork.Common
                     {
                         Attack(subject, noun);
                         Player.Moves++;
-                        EnemyAttack();
+                        EnemyAttack(subject);
                     }
                     break;
 
@@ -268,7 +265,7 @@ namespace Zork.Common
 
                     case (int)Attacks.HeavyDamage:
                         Output.WriteLine("You swing your sword and it's a solid hit");
-                        enemyToAttack.TakeDamage(0.8f);
+                        enemyToAttack.TakeDamage(50);
                         if (enemyToAttack.Health <= 0)
                         {
                             Player.CurrentRoom.RemoveEnemyFromRoom(enemyToAttack);
@@ -282,7 +279,7 @@ namespace Zork.Common
 
                     case (int)Attacks.LightDamage:
                         Output.WriteLine("You swing your sword and it's a glancing blow");
-                        enemyToAttack.TakeDamage(0.4f);
+                        enemyToAttack.TakeDamage(25);
                         if (enemyToAttack.Health <= 0)
                         {
                             Player.CurrentRoom.RemoveEnemyFromRoom(enemyToAttack);
@@ -301,9 +298,11 @@ namespace Zork.Common
             }
         }
 
-        private void EnemyAttack()
+        private void EnemyAttack(string enemyName)
         {
-            if (Player.CurrentRoom.Enemy != null)
+            Enemy attackingEnemy = Player.CurrentRoom.Enemy.FirstOrDefault(enemy => string.Compare(enemy.Name, enemyName, ignoreCase: true) == 0);
+
+            if (attackingEnemy != null)
             {
                 Random rnd = new Random();
 
@@ -319,7 +318,7 @@ namespace Zork.Common
 
                     case (int)Attacks.HeavyDamage:
                         Output.WriteLine("The troll swings at you and it's a solid hit");
-                        Player.TakeDamage(.6f);
+                        Player.TakeDamage(40);
 
                         if (Player.Health <= 0)
                         {
@@ -334,7 +333,7 @@ namespace Zork.Common
 
                     case (int)Attacks.LightDamage:
                         Output.WriteLine("The troll swings at you and it's a glancing blow");
-                        Player.TakeDamage(.2f);
+                        Player.TakeDamage(25);
 
                         if (Player.Health <= 0)
                         {

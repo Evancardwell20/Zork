@@ -8,7 +8,7 @@ namespace Zork.Common
 
         public string LookDescription { get; }
 
-        public float Health
+        public int Health
         {
             get
             {
@@ -24,21 +24,21 @@ namespace Zork.Common
             }
         }
 
-        public event EventHandler<float> HealthChanged;
+        public event EventHandler<int> HealthChanged;
 
-        public Enemy(string name, string lookDescription, float health)
+        public Enemy(string name, string lookDescription, int health)
         {
             Name = name;
             LookDescription = lookDescription;
             Health = health;
         }
 
-        public void TakeDamage(float damageAmount)
+        public void TakeDamage(int damageAmount)
         {
             _health -= damageAmount;
         }
         public override string ToString() => Name;
 
-        private float _health;
+        private int _health;
     }
 }
