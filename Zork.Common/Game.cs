@@ -236,7 +236,7 @@ namespace Zork.Common
 
             else if (attackItem == null)
             {
-                Output.WriteLine($"You don't have that");
+                Output.WriteLine($"You don't have a {attackItemName}.");
             }
 
             else if (!attackItem.IsWeapon)
@@ -295,6 +295,54 @@ namespace Zork.Common
                     
                 }
             }
+        }
+
+        private void EnemyAttack()
+        {
+            if(Player.CurrentRoom.Enemy != null)
+            {
+                Random rnd = new Random();
+
+                Type type = typeof(EnemyAttacks);
+                Array values = type.GetEnumValues();
+                int attackIndex = rnd.Next(values.Length);
+
+                switch (attackIndex)
+                {
+                    case (int)EnemyAttacks.Miss:
+                        Output.WriteLine("The troll swings at you but misses.");
+                        break;
+
+                    case (int)Attacks.HeavyDamage:
+                        Output.WriteLine("The troll swings at you and it's a solid hit");
+                        
+                        if (Player.Health <= 0)
+                        { 
+                            Output.WriteLine("The troll falls to the ground");
+                        }
+                        else
+                        {
+                            Output.WriteLine($"Enemy Health: {Player.Health}");
+                        }
+                        break;
+
+                    case (int)Attacks.LightDamage:
+                        Output.WriteLine("You swing your sword and it's a glancing blow");
+                        
+                        if (Player.Health <= 0)
+                        {
+                            Output.WriteLine("The troll falls to the ground");
+                        }
+                        else
+                        {
+                            Output.WriteLine($"Your Health: {Player.Health}");
+                        }
+                        break;
+
+                    default:
+                        break;
+                }
+
         }
         private static Commands ToCommand(string commandString) => Enum.TryParse(commandString, true, out Commands result) ? result : Commands.Unknown;
     }
